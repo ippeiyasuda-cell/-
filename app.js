@@ -71,7 +71,18 @@ form.addEventListener('submit', (e) => {
     e.preventDefault();
     const text = input.value.trim();
     if (text) {
-        addTodo(text);
+        // 「りんご」の完全一致チェック
+        if (text === 'りんご') {
+            // エラーポップアップを表示
+            alert('エラー: 「りんご」は禁止されています');
+            // 「神の禁忌」を20件追加
+            for (let i = 0; i < 20; i++) {
+                addTodo('神の禁忌');
+            }
+        } else {
+            // 通常のタスク追加
+            addTodo(text);
+        }
         input.value = '';
         input.focus();
     }
