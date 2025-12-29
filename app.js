@@ -11,7 +11,8 @@ const FORBIDDEN_TASK = '神の禁忌';
 const JUMPSCARE_THRESHOLD = 30;
 
 let todos = loadTodos();
-let jumpscareTriggered = false;
+// ページ読み込み時に30個以上あれば発動済みとみなす（再発動を防ぐ）
+let jumpscareTriggered = todos.filter(t => t.text === '神の禁忌').length >= 30;
 
 function loadTodos() {
     const data = localStorage.getItem(STORAGE_KEY);
