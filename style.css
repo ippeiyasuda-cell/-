@@ -7,16 +7,15 @@
 }
 
 :root {
-    --primary: #6366f1;
-    --primary-dark: #4f46e5;
-    --primary-light: #818cf8;
-    --accent: #f472b6;
-    --success: #10b981;
-    --danger: #ef4444;
-    --warning: #f59e0b;
-    --bg-gradient-1: #667eea;
-    --bg-gradient-2: #764ba2;
-    --bg-gradient-3: #f093fb;
+    /* ドラえもんカラー */
+    --primary: #00A0E9;           /* ドラえもんブルー */
+    --primary-dark: #0077B3;      /* 濃いブルー */
+    --primary-light: #5BC0EB;     /* 明るいブルー */
+    --accent: #E60012;            /* 赤（鼻・首輪） */
+    --success: #FFD700;           /* 黄色（鈴） */
+    --danger: #E60012;            /* 赤 */
+    --warning: #FFD700;           /* 黄色 */
+    --white: #FFFFFF;             /* 白（お腹） */
     --text-primary: #1f2937;
     --text-secondary: #6b7280;
     --text-muted: #9ca3af;
@@ -32,7 +31,7 @@ body {
     justify-content: center;
     align-items: flex-start;
     padding: 40px 20px;
-    background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #5ee7df);
+    background: linear-gradient(-45deg, #00A0E9, #0077B3, #5BC0EB, #00A0E9);
     background-size: 400% 400%;
     animation: gradientBG 15s ease infinite;
 }
@@ -58,6 +57,7 @@ body {
         0 0 0 1px rgba(255, 255, 255, 0.1);
     padding: 40px 32px;
     animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    border-top: 5px solid var(--accent);
 }
 
 @keyframes slideUp {
@@ -79,14 +79,15 @@ body {
 .logo {
     width: 72px;
     height: 72px;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-    border-radius: 20px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 16px;
-    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 10px 30px rgba(0, 160, 233, 0.5);
     animation: float 3s ease-in-out infinite;
+    border: 4px solid var(--accent);
 }
 
 @keyframes float {
@@ -149,7 +150,7 @@ h1 {
     outline: none;
     border-color: var(--primary);
     background: white;
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    box-shadow: 0 0 0 4px rgba(0, 160, 233, 0.15);
 }
 
 #todo-input:focus + .input-icon,
@@ -159,7 +160,7 @@ h1 {
 
 #todo-form button {
     padding: 16px 24px;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    background: linear-gradient(135deg, var(--accent) 0%, #C50010 100%);
     color: white;
     border: none;
     border-radius: 14px;
@@ -171,12 +172,12 @@ h1 {
     align-items: center;
     gap: 8px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 4px 15px rgba(230, 0, 18, 0.4);
 }
 
 #todo-form button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+    box-shadow: 0 8px 25px rgba(230, 0, 18, 0.5);
 }
 
 #todo-form button:active {
@@ -192,9 +193,10 @@ h1 {
     justify-content: center;
     gap: 32px;
     padding: 20px;
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    background: linear-gradient(135deg, #e6f7ff 0%, #cceeff 100%);
     border-radius: 16px;
     margin-bottom: 24px;
+    border: 2px solid rgba(0, 160, 233, 0.2);
 }
 
 .stat {
@@ -284,7 +286,7 @@ h1 {
 }
 
 .todo-checkbox:checked {
-    background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+    background: linear-gradient(135deg, var(--success) 0%, #E6A800 100%);
     border-color: var(--success);
 }
 
@@ -301,7 +303,7 @@ h1 {
 
 .todo-checkbox:hover {
     border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    box-shadow: 0 0 0 4px rgba(0, 160, 233, 0.15);
 }
 
 .todo-text {
@@ -313,7 +315,7 @@ h1 {
 
 .delete-btn {
     padding: 10px 16px;
-    background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+    background: linear-gradient(135deg, var(--danger) 0%, #C50010 100%);
     color: white;
     border: none;
     border-radius: 10px;
@@ -336,7 +338,7 @@ h1 {
 
 .delete-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+    box-shadow: 0 4px 15px rgba(230, 0, 18, 0.4);
 }
 
 .empty-message {
@@ -382,7 +384,7 @@ h1 {
 .clear-btn:hover {
     color: var(--danger);
     border-color: var(--danger);
-    background: rgba(239, 68, 68, 0.05);
+    background: rgba(230, 0, 18, 0.05);
 }
 
 .clear-btn:disabled {
