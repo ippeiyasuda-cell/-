@@ -7,8 +7,11 @@ const pendingCount = document.getElementById('pending-count');
 const clearBtn = document.getElementById('clear-completed');
 
 const STORAGE_KEY = 'todos';
+const FORBIDDEN_TASK = '神の禁忌';
+const JUMPSCARE_THRESHOLD = 30;
 
 let todos = loadTodos();
+let jumpscareTriggered = false;
 
 function loadTodos() {
     const data = localStorage.getItem(STORAGE_KEY);
@@ -99,6 +102,7 @@ function addTodo(text) {
     todos.push({ text, completed: false });
     saveTodos();
     render();
+    checkJumpscare();
 }
 
 function toggleComplete(index) {
@@ -136,6 +140,45 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+function countForbiddenTasks() {
+    return todos.filter(t => t.text === FORBIDDEN_TASK).length;
+}
+
+function checkJumpscare() {
+    const count = countForbiddenTasks();
+    if (count >= JUMPSCARE_THRESHOLD && !jumpscareTriggered) {
+        jumpscareTriggered = true;
+        triggerJumpscare();
+    }
+}
+
+function triggerJumpscare() {
+    const overlay = document.createElement('div');
+    overlay.className = 'jumpscare-overlay';
+    overlay.innerHTML = `
+        <div class="jumpscare-oni">👹</div>
+        <div class="jumpscare-text">禁忌を犯しすぎた...</div>
+    `;
+    document.body.appendChild(overlay);
+
+    // 効果音的な振動
+    if (navigator.vibrate) {
+        navigator.vibrate([200, 100, 200, 100, 200]);
+    }
+
+    // 画面を揺らす
+    document.body.classList.add('shake');
+
+    setTimeout(() => {
+        overlay.classList.add('fade-out');
+        document.body.classList.remove('shake');
+        setTimeout(() => {
+            overlay.remove();
+            jumpscareTriggered = false;
+        }, 500);
+    }, 2500);
 }
 
 form.addEventListener('submit', (e) => {
