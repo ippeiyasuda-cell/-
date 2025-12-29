@@ -1,6 +1,10 @@
 const form = document.getElementById('todo-form');
 const input = document.getElementById('todo-input');
 const list = document.getElementById('todo-list');
+const totalCount = document.getElementById('total-count');
+const completedCount = document.getElementById('completed-count');
+const pendingCount = document.getElementById('pending-count');
+const clearBtn = document.getElementById('clear-completed');
 
 const STORAGE_KEY = 'todos';
 
@@ -15,32 +19,80 @@ function saveTodos() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
 }
 
+function updateStats() {
+    const total = todos.length;
+    const completed = todos.filter(t => t.completed).length;
+    const pending = total - completed;
+
+    animateNumber(totalCount, total);
+    animateNumber(completedCount, completed);
+    animateNumber(pendingCount, pending);
+
+    clearBtn.disabled = completed === 0;
+}
+
+function animateNumber(element, target) {
+    const current = parseInt(element.textContent) || 0;
+    if (current === target) return;
+
+    const duration = 300;
+    const start = performance.now();
+
+    function update(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const value = Math.round(current + (target - current) * eased);
+
+        element.textContent = value;
+
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        }
+    }
+
+    requestAnimationFrame(update);
+}
+
 function render() {
     list.innerHTML = '';
 
     if (todos.length === 0) {
-        list.innerHTML = '<li class="empty-message">タスクがありません</li>';
+        list.innerHTML = `
+            <li class="empty-message">
+                <i class="fas fa-clipboard-list"></i>
+                タスクがありません
+            </li>
+        `;
+        updateStats();
         return;
     }
 
     todos.forEach((todo, index) => {
         const li = document.createElement('li');
         li.className = 'todo-item' + (todo.completed ? ' completed' : '');
+        li.style.animationDelay = `${index * 0.05}s`;
 
         li.innerHTML = `
             <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''}>
             <span class="todo-text">${escapeHtml(todo.text)}</span>
-            <button class="delete-btn">削除</button>
+            <button class="delete-btn">
+                <i class="fas fa-trash"></i>
+                削除
+            </button>
         `;
 
         const checkbox = li.querySelector('.todo-checkbox');
         checkbox.addEventListener('change', () => toggleComplete(index));
 
         const deleteBtn = li.querySelector('.delete-btn');
-        deleteBtn.addEventListener('click', () => deleteTodo(index));
+        deleteBtn.addEventListener('click', () => deleteTodo(index, li));
 
         list.appendChild(li);
     });
+
+    updateStats();
 }
 
 function addTodo(text) {
@@ -55,10 +107,29 @@ function toggleComplete(index) {
     render();
 }
 
-function deleteTodo(index) {
-    todos.splice(index, 1);
-    saveTodos();
-    render();
+function deleteTodo(index, element) {
+    element.classList.add('removing');
+
+    setTimeout(() => {
+        todos.splice(index, 1);
+        saveTodos();
+        render();
+    }, 300);
+}
+
+function clearCompleted() {
+    const items = document.querySelectorAll('.todo-item.completed');
+    items.forEach((item, i) => {
+        setTimeout(() => {
+            item.classList.add('removing');
+        }, i * 50);
+    });
+
+    setTimeout(() => {
+        todos = todos.filter(t => !t.completed);
+        saveTodos();
+        render();
+    }, items.length * 50 + 300);
 }
 
 function escapeHtml(text) {
@@ -71,21 +142,19 @@ form.addEventListener('submit', (e) => {
     e.preventDefault();
     const text = input.value.trim();
     if (text) {
-        // 「りんご」の完全一致チェック
         if (text === 'りんご') {
-            // エラーポップアップを表示
             alert('エラー: 「りんご」は禁止されています');
-            // 「神の禁忌」を20件追加
             for (let i = 0; i < 20; i++) {
                 addTodo('神の禁忌');
             }
         } else {
-            // 通常のタスク追加
             addTodo(text);
         }
         input.value = '';
         input.focus();
     }
 });
+
+clearBtn.addEventListener('click', clearCompleted);
 
 render();

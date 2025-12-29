@@ -5,15 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TODO App</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1>TODO</h1>
-        <form id="todo-form">
-            <input type="text" id="todo-input" placeholder="新しいタスクを入力..." required>
-            <button type="submit">追加</button>
-        </form>
-        <ul id="todo-list"></ul>
+    <div class="app-wrapper">
+        <div class="container">
+            <header class="app-header">
+                <div class="logo">
+                    <i class="fas fa-check-double"></i>
+                </div>
+                <h1>TODO</h1>
+                <p class="subtitle">タスクを管理しよう</p>
+            </header>
+
+            <form id="todo-form">
+                <div class="input-wrapper">
+                    <i class="fas fa-plus-circle input-icon"></i>
+                    <input type="text" id="todo-input" placeholder="新しいタスクを入力..." required>
+                </div>
+                <button type="submit">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>追加</span>
+                </button>
+            </form>
+
+            <div class="stats-bar">
+                <div class="stat">
+                    <span class="stat-number" id="total-count">0</span>
+                    <span class="stat-label">合計</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" id="completed-count">0</span>
+                    <span class="stat-label">完了</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" id="pending-count">0</span>
+                    <span class="stat-label">未完了</span>
+                </div>
+            </div>
+
+            <ul id="todo-list"></ul>
+
+            <footer class="app-footer">
+                <button id="clear-completed" class="clear-btn">
+                    <i class="fas fa-trash-alt"></i>
+                    完了済みを削除
+                </button>
+            </footer>
+        </div>
     </div>
     <script src="app.js"></script>
 </body>
