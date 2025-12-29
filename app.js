@@ -186,7 +186,7 @@ function triggerJumpscare() {
         document.body.classList.remove('shake');
         setTimeout(() => {
             overlay.remove();
-            jumpscareTriggered = false;
+            // フラグのリセットはcheckJumpscare()で29個以下になった時だけ行う
         }, 500);
     }, 2500);
 }
