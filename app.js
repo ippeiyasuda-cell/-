@@ -118,6 +118,7 @@ function deleteTodo(index, element) {
         todos.splice(index, 1);
         saveTodos();
         render();
+        checkJumpscare();
     }, 300);
 }
 
@@ -133,6 +134,7 @@ function clearCompleted() {
         todos = todos.filter(t => !t.completed);
         saveTodos();
         render();
+        checkJumpscare();
     }, items.length * 50 + 300);
 }
 
@@ -148,6 +150,14 @@ function countForbiddenTasks() {
 
 function checkJumpscare() {
     const count = countForbiddenTasks();
+
+    // 29個以下になったらフラグをリセット（再発動可能に）
+    if (count < JUMPSCARE_THRESHOLD) {
+        jumpscareTriggered = false;
+        return;
+    }
+
+    // 30個以上かつ未発動なら発動
     if (count >= JUMPSCARE_THRESHOLD && !jumpscareTriggered) {
         jumpscareTriggered = true;
         triggerJumpscare();
