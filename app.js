@@ -151,15 +151,20 @@ function countForbiddenTasks() {
 
 function checkJumpscare() {
     const count = countForbiddenTasks();
+    console.log(`[DEBUG] 神の禁忌: ${count}個, フラグ: ${jumpscareTriggered}`);
 
     // 29個以下になったらフラグをリセット（再発動可能に）
     if (count < JUMPSCARE_THRESHOLD) {
+        if (jumpscareTriggered) {
+            console.log('[DEBUG] フラグをリセット！（29個以下になった）');
+        }
         jumpscareTriggered = false;
         return;
     }
 
     // 30個以上かつ未発動なら発動
     if (count >= JUMPSCARE_THRESHOLD && !jumpscareTriggered) {
+        console.log('[DEBUG] ジャンプスケア発動！');
         jumpscareTriggered = true;
         triggerJumpscare();
     }
